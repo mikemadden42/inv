@@ -31,5 +31,9 @@ fn main() {
     println!("used swap   : {} KB", sys.get_used_swap());
 
     // Number of processors
-    println!("NB processors: {}", sys.get_processors().len());
+    println!("Number of cores: {}", sys.get_processors().len());
+    println!(
+        "Number of physical processors: {:?}",
+        sys.get_physical_core_count().unwrap()
+    );
 }
