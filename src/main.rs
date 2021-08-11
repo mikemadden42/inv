@@ -5,35 +5,35 @@ fn main() {
 
     // We display the disks:
     println!("=> disk list:");
-    for disk in sys.get_disks() {
+    for disk in sys.disks() {
         println!("{:?}", disk);
     }
 
     // Network data:
-    for (interface_name, data) in sys.get_networks() {
+    for (interface_name, data) in sys.networks() {
         println!(
             "{}: {}/{} B",
             interface_name,
-            data.get_received(),
-            data.get_transmitted()
+            data.received(),
+            data.transmitted()
         );
     }
 
     // Components temperature:
-    for component in sys.get_components() {
+    for component in sys.components() {
         println!("{:?}", component);
     }
 
     // Memory information:
-    println!("total memory: {} KB", sys.get_total_memory());
-    println!("used memory : {} KB", sys.get_used_memory());
-    println!("total swap  : {} KB", sys.get_total_swap());
-    println!("used swap   : {} KB", sys.get_used_swap());
+    println!("total memory: {} KB", sys.total_memory());
+    println!("used memory : {} KB", sys.used_memory());
+    println!("total swap  : {} KB", sys.total_swap());
+    println!("used swap   : {} KB", sys.used_swap());
 
     // Number of processors
-    println!("Number of cores: {}", sys.get_processors().len());
+    println!("Number of cores: {}", sys.processors().len());
     println!(
         "Number of physical processors: {:?}",
-        sys.get_physical_core_count().unwrap()
+        sys.physical_core_count().unwrap()
     );
 }
