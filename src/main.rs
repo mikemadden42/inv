@@ -1,6 +1,11 @@
 use sysinfo::{NetworkExt, System, SystemExt};
 
 fn main() {
+    struct SystemInfo {
+        logical_cores: usize,
+        physical_cores: usize,
+    }
+
     let sys = System::new_all();
 
     // We display the disks:
@@ -30,10 +35,14 @@ fn main() {
     println!("total swap  : {} KB", sys.total_swap());
     println!("used swap   : {} KB", sys.used_swap());
 
-    // Number of processors
-    println!("Number of cores: {}", sys.processors().len());
+    let system_info = SystemInfo {
+        logical_cores: sys.processors().len(),
+        physical_cores: sys.physical_core_count().unwrap(),
+    };
+
+    println!("Number of cores: {}", system_info.logical_cores);
     println!(
         "Number of physical processors: {:?}",
-        sys.physical_core_count().unwrap()
+        system_info.physical_cores
     );
 }
