@@ -8,3 +8,4 @@ edition = "2021"
 
 [dependencies]
 sysinfo = "0.23.5"
+tabled = "0.5.0"
