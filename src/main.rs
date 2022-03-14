@@ -10,6 +10,10 @@ fn main() {
         total_swap: u64,
         used_memory: u64,
         used_swap: u64,
+        sys_name: String,
+        sys_kernel_version: String,
+        sys_os_version: String,
+        sys_host_name: String,
     }
 
     let sys = System::new_all();
@@ -21,6 +25,10 @@ fn main() {
         total_swap: sys.total_swap(),
         used_memory: sys.used_memory(),
         used_swap: sys.used_swap(),
+        sys_name: sys.name().unwrap(),
+        sys_kernel_version: sys.kernel_version().unwrap(),
+        sys_os_version: sys.os_version().unwrap(),
+        sys_host_name: sys.host_name().unwrap(),
     }];
 
     let table = Table::new(&stats).with(Rotate::Left).with(Style::modern());
