@@ -212,9 +212,9 @@ dependencies = [
 
 [[package]]
 name = "sysinfo"
-version = "0.23.7"
+version = "0.23.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "64b1a2186a2e97a1f866b949021dfeeee053294ef370b57417b385674a8776d4"
+checksum = "56b1e20ee77901236c389ff74618a899ff5fd34719a7ff0fd1d64f0acca5179a"
 dependencies = [
  "cfg-if",
  "core-foundation-sys",
@@ -227,9 +227,9 @@ dependencies = [
 
 [[package]]
 name = "tabled"
-version = "0.6.0"
+version = "0.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "97353139cc8a4e3f726e54f78081883d1c133b8e1834f55f168122f99f989717"
+checksum = "d15827061abcf689257b1841c8e2732b1dfcc3ef825b24ce6c606e1e9e1a7bde"
 dependencies = [
  "papergrid",
  "tabled_derive",
