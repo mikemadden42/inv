@@ -19,7 +19,7 @@ fn main() {
     let sys = System::new_all();
 
     let stats = vec![SystemInfo {
-        logical_cores: sys.processors().len(),
+        logical_cores: sys.cpus().len(),
         physical_cores: sys.physical_core_count().unwrap(),
         total_memory: sys.total_memory(),
         total_swap: sys.total_swap(),
