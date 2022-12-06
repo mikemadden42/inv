@@ -31,7 +31,8 @@ fn main() {
         sys_host_name: sys.host_name().unwrap(),
     }];
 
-    let table = Table::new(&stats).with(Rotate::Left).with(Style::modern());
+    let mut binding = Table::new(&stats);
+    let table = binding.with(Rotate::Left).with(Style::modern());
     println!("{table}");
 
     println!("components:");
