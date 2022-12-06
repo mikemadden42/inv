@@ -33,4 +33,9 @@ fn main() {
 
     let table = Table::new(&stats).with(Rotate::Left).with(Style::modern());
     println!("{table}");
+
+    println!("components:");
+    for component in sys.components() {
+        println!("{:?}", component);
+    }
 }
