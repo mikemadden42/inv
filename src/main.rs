@@ -23,6 +23,6 @@ fn main() {
 
     // Components temperature:
     for component in sys.components() {
-        println!("{:?}", component);
+        println!("{component:?}");
     }
 }
