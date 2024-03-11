@@ -1,12 +1,12 @@
-use sysinfo::{System, SystemExt};
+use sysinfo::{Components, System};
 
 fn main() {
     let sys = System::new_all();
 
-    println!("system hostname: {}", sys.host_name().unwrap());
-    println!("system type: {}", sys.name().unwrap());
-    println!("system os: {}", sys.os_version().unwrap());
-    println!("system kernel: {}", sys.kernel_version().unwrap());
+    println!("system hostname: {}", System::host_name().unwrap());
+    println!("system type: {}", System::name().unwrap());
+    println!("system os: {}", System::os_version().unwrap());
+    println!("system kernel: {}", System::kernel_version().unwrap());
 
     // Number of processors
     println!("Number of cores: {}", sys.cpus().len());
@@ -21,8 +21,8 @@ fn main() {
     println!("total swap  : {} KB", sys.total_swap());
     println!("used swap   : {} KB", sys.used_swap());
 
-    // Components temperature:
-    for component in sys.components() {
+    let components: Components = Components::new_with_refreshed_list();
+    for component in &components {
         println!("{component:?}");
     }
 }
