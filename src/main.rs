@@ -12,7 +12,7 @@ fn main() {
     println!("Number of cores: {}", sys.cpus().len());
     println!(
         "Number of physical processors: {:?}",
-        sys.physical_core_count().unwrap()
+        System::physical_core_count().unwrap() // Changed from sys.physical_core_count()
     );
 
     // Memory information:
