@@ -1,3 +1,6 @@
+use std::io::{self, Write};
+use std::process::ExitCode;
+
 use sysinfo::{Components, CpuRefreshKind, MemoryRefreshKind, RefreshKind, System};
 
 const UNKNOWN: &str = "unknown";
@@ -12,36 +15,55 @@ fn format_bytes(bytes: u64) -> String {
     format!("{:.2} GiB", bytes as f64 / GIB)
 }
 
-fn main() {
+fn run(out: &mut impl Write) -> io::Result<()> {
     let sys = System::new_with_specifics(
         RefreshKind::nothing()
             .with_memory(MemoryRefreshKind::everything())
             .with_cpu(CpuRefreshKind::nothing()),
     );
 
-    println!("system hostname: {}", or_unknown(System::host_name()));
-    println!("system type: {}", or_unknown(System::name()));
-    println!("system os: {}", or_unknown(System::os_version()));
-    println!("system kernel: {}", or_unknown(System::kernel_version()));
+    writeln!(out, "system hostname: {}", or_unknown(System::host_name()))?;
+    writeln!(out, "system type: {}", or_unknown(System::name()))?;
+    writeln!(out, "system os: {}", or_unknown(System::os_version()))?;
+    writeln!(
+        out,
+        "system kernel: {}",
+        or_unknown(System::kernel_version())
+    )?;
 
     // CPU information
-    println!("logical CPUs: {}", sys.cpus().len());
-    println!(
+    writeln!(out, "logical CPUs: {}", sys.cpus().len())?;
+    writeln!(
+        out,
         "physical cores: {}",
         System::physical_core_count().map_or_else(|| UNKNOWN.to_string(), |n| n.to_string())
-    );
+    )?;
 
     // Memory information
-    println!("total memory: {}", format_bytes(sys.total_memory()));
-    println!("used memory : {}", format_bytes(sys.used_memory()));
-    println!("total swap  : {}", format_bytes(sys.total_swap()));
-    println!("used swap   : {}", format_bytes(sys.used_swap()));
+    writeln!(out, "total memory: {}", format_bytes(sys.total_memory()))?;
+    writeln!(out, "used memory : {}", format_bytes(sys.used_memory()))?;
+    writeln!(out, "total swap  : {}", format_bytes(sys.total_swap()))?;
+    writeln!(out, "used swap   : {}", format_bytes(sys.used_swap()))?;
 
     let components = Components::new_with_refreshed_list();
     if !components.is_empty() {
-        println!("temperatures:");
+        writeln!(out, "temperatures:")?;
         for component in &components {
-            println!("  {component:?}");
+            writeln!(out, "  {component:?}")?;
+        }
+    }
+
+    out.flush()
+}
+
+fn main() -> ExitCode {
+    match run(&mut io::stdout().lock()) {
+        Ok(()) => ExitCode::SUCCESS,
+        // The reader went away (e.g. `inv | head`); that's not an error.
+        Err(e) if e.kind() == io::ErrorKind::BrokenPipe => ExitCode::SUCCESS,
+        Err(e) => {
+            eprintln!("inv: {e}");
+            ExitCode::FAILURE
         }
     }
 }
@@ -63,6 +85,15 @@ mod tests {
     #[test]
     fn format_bytes_fractional() {
         assert_eq!(format_bytes(1024 * 1024 * 512), "0.50 GiB");
+    }
+
+    #[test]
+    fn run_writes_report() {
+        let mut out = Vec::new();
+        run(&mut out).unwrap();
+        let text = String::from_utf8(out).unwrap();
+        assert!(text.starts_with("system hostname: "));
+        assert!(text.contains("total memory: "));
     }
 
     #[test]
