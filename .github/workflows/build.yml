@@ -30,7 +30,7 @@ jobs:
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.toolchain }}
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: Swatinem/rust-cache@v2
       - name: Build
         run: cargo build --verbose
@@ -48,7 +48,7 @@ jobs:
         with:
           components: clippy
       - name: Checkout sources
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
       - uses: Swatinem/rust-cache@v2
       - name: Cargo Clippy
         run: cargo clippy --all-targets -- -D warnings
@@ -62,6 +62,6 @@ jobs:
         with:
           components: rustfmt
       - name: Checkout sources
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
       - name: Check Formatting
         run: cargo fmt --all -- --check
